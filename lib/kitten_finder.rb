@@ -12,7 +12,7 @@ class KittenFinder
     # 2. Calculate target coordinates
     x, y = LocationFinder.new.evaluate(directions)
 
-    # 3. Call /api/:email/location/:x/:y to send search party
+    # 3. Call `/api/:email/location/:x/:y` to send search party and return message
     send_location(x, y)
   end
 

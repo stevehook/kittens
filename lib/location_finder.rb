@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
 class LocationFinder
-  attr_accessor :coordinates, :heading, :directions
+  Location = Struct.new(:coordinates, :heading)
+
+  attr_accessor :location
 
   def initialize
-    self.heading = [0, 1]
-    self.coordinates = [0, 0]
+    self.location = Location.new([0, 0], [0, 1])
   end
 
   def evaluate(directions)
     directions.each do |direction|
       apply_direction(direction)
     end
-    coordinates
+    location.coordinates
   end
 
   FORWARD = 'forward'
@@ -32,16 +33,23 @@ class LocationFinder
   end
 
   def move_forward
-    [0, 1].each do |n|
-      self.coordinates[n] = self.coordinates[n] + self.heading[n]
-    end
+    self.location = Location.new(
+      [location.coordinates[0] + location.heading[0], location.coordinates[1] + location.heading[1]],
+      location.heading
+    )
   end
 
   def turn_left
-    self.heading = [-1 * heading[1], heading[0]]
+    self.location = Location.new(
+      location.coordinates,
+      [-1 * location.heading[1], location.heading[0]]
+    )
   end
 
   def turn_right
-    self.heading = [heading[1], -1 * heading[0]]
+    self.location = Location.new(
+      location.coordinates,
+      [location.heading[1], -1 * location.heading[0]]
+    )
   end
 end
