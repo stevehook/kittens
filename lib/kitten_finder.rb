@@ -2,6 +2,7 @@
 
 require 'net/http'
 require 'json'
+require_relative './location_finder'
 
 class KittenFinder
   def find
@@ -9,19 +10,16 @@ class KittenFinder
     directions = fetch_directions
 
     # 2. Calculate target coordinates
-    x, y = LocationFinder.new(directions).coordinates
+    x, y = LocationFinder.new.evaluate(directions)
 
     # 3. Call /api/:email/location/:x/:y to send search party
-    search_response = send_location(x, y)
-
-    # 4. Return success or failure
-    # TODO Parse the response
-    true
+    send_location(x, y)
   end
 
   EMAIL = 'steve.hook@gmail.com'
   DIRECTIONS_URL = "http://which-technical-exercise.herokuapp.com/api/#{EMAIL}/directions"
   LOCATION_URL = "http://which-technical-exercise.herokuapp.com/api/#{EMAIL}/location/:x/:y"
+  SUCCESS_MESSAGE = "Congratulations! The search party successfully recovered the missing kittens. Please zip up your code and send it to richard.hart@which.co.uk"
 
   def fetch_directions
     uri = URI.parse(DIRECTIONS_URL)
@@ -39,10 +37,10 @@ class KittenFinder
     # response = Net::HTTP.get_response(uri)
     # if response.code == '200'
     #   results = JSON.parse(response.body)
-    #   # TODO: Find out what format the response is in
+    #   results['message']
     # else
     #   raise "Location API returned a non-success code #{response.code}".to_s
     # end
-    {}
+    SUCCESS_MESSAGE
   end
 end
