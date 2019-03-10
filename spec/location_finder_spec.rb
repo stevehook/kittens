@@ -12,5 +12,12 @@ RSpec.describe LocationFinder do
         expect(subject.evaluate(directions)).to eql [0, 1]
       end
     end
+
+    context 'when moving forward one position, turning right and moving forward again' do
+      let(:directions) { %w[forward right forward] }
+      it 'returns coordinates (1, 1)' do
+        expect(subject.evaluate(directions)).to eql [1, 1]
+      end
+    end
   end
 end
