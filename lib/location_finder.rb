@@ -26,6 +26,8 @@ class LocationFinder
       move_forward
     elsif direction == RIGHT
       turn_right
+    elsif direction == LEFT
+      turn_left
     end
   end
 
@@ -33,6 +35,10 @@ class LocationFinder
     [0, 1].each do |n|
       self.coordinates[n] = self.coordinates[n] + self.heading[n]
     end
+  end
+
+  def turn_left
+    self.heading = [-1 * heading[1], heading[0]]
   end
 
   def turn_right
