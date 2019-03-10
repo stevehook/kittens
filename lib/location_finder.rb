@@ -3,51 +3,44 @@
 class LocationFinder
   Location = Struct.new(:coordinates, :heading)
 
-  attr_accessor :location
-
-  def initialize
-    self.location = Location.new([0, 0], [0, 1])
-  end
+  FORWARD = 'forward'
+  LEFT = 'left'
+  RIGHT = 'right'
+  INITIAL_LOCATION = Location.new([0, 0], [0, 1])
 
   def evaluate(directions)
-    directions.each do |direction|
-      apply_direction(direction)
+    location = directions.inject(INITIAL_LOCATION) do |current_location, direction|
+      apply_direction(direction, current_location)
     end
     location.coordinates
   end
 
-  FORWARD = 'forward'
-  LEFT = 'left'
-  RIGHT = 'right'
-
-  private
-
-  def apply_direction(direction)
+  def apply_direction(direction, location)
     if direction == FORWARD
-      move_forward
+      move_forward(location)
     elsif direction == RIGHT
-      turn_right
+      turn_right(location)
     elsif direction == LEFT
-      turn_left
+      turn_left(location)
     end
   end
 
-  def move_forward
-    self.location = Location.new(
+  def move_forward(location)
+    Location.new(
       [location.coordinates[0] + location.heading[0], location.coordinates[1] + location.heading[1]],
       location.heading
     )
   end
 
-  def turn_left
-    self.location = Location.new(
+  def turn_left(location)
+    Location.new(
       location.coordinates,
       [-1 * location.heading[1], location.heading[0]]
     )
   end
 
-  def turn_right
-    self.location = Location.new(
+  def turn_right(location)
+    Location.new(
       location.coordinates,
       [location.heading[1], -1 * location.heading[0]]
     )
