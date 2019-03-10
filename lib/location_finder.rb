@@ -36,14 +36,6 @@ class LocationFinder
   end
 
   def turn_right
-    if heading == [0, 1]
-      self.heading = [1, 0]
-    elsif heading == [1, 0]
-      self.heading = [0, -1]
-    elsif heading == [0, -1]
-      self.heading = [-1, 0]
-    else
-      self.heading == [0, 1]
-    end
+    self.heading = [heading[1], -1 * heading[0]]
   end
 end
