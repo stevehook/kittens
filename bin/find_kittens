@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/kitten_finder'
+puts KittenFinder.new.find
